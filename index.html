@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ôn tập Thuật toán ứng dụng — K65</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Mobile Topbar -->
+    <header class="mobile-header">
+      <button id="menuToggle" class="icon-btn" aria-label="Mở danh sách bài">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <span class="mobile-title">Thuật toán ứng dụng</span>
+      <button id="themeToggleMobile" class="icon-btn" aria-label="Đổi giao diện sáng/tối"></button>
+    </header>
+
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand" id="goHomeBtn" role="button" tabindex="0">
+          <div class="brand-badge">TT</div>
+          <div>
+            <h1 class="brand-title">Thuật toán ứng dụng</h1>
+            <p class="brand-sub">CNTT Việt Anh 1 &amp; 2 (K65)</p>
+          </div>
+        </div>
+        <button id="themeToggle" class="icon-btn" title="Đổi giao diện sáng / tối" aria-label="Đổi giao diện sáng / tối"></button>
+      </div>
+
+      <div class="progress-card">
+        <div class="progress-top">
+          <span>Tiến độ ôn tập</span>
+          <strong id="progressText">0 / 10 bài</strong>
+        </div>
+        <div class="progress-track">
+          <div id="progressBar" class="progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div class="sidebar-controls">
+        <div class="search-box">
+          <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input id="searchInput" type="text" placeholder="Tìm bài, mã bài, chủ đề..." autocomplete="off" />
+        </div>
+
+        <label class="study-toggle" title="Che phần Ý tưởng và Code để tự suy nghĩ trước khi xem">
+          <input id="studyModeToggle" type="checkbox" />
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">Chế độ tự luyện (che đáp án)</span>
+        </label>
+      </div>
+
+      <nav class="nav-list" id="navList" aria-label="Danh sách bài ôn tập">
+        <!-- Rendered by app.js -->
+      </nav>
+
+      <div class="sidebar-footer">
+        <span class="shortcut-hint">Phím tắt: <kbd>←</kbd> <kbd>→</kbd> chuyển bài · <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> chuyển mục</span>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+      <!-- Rendered dynamically by app.js -->
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
