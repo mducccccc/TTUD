@@ -1077,3 +1077,590 @@ table.trace-table tbody tr.row-future {
     font-size: 0.82rem;
   }
 }
+
+/* =========================================================================
+   Minh họa 2 — Interactive Visual Simulator Styles
+   ========================================================================= */
+.tabs-bar.tabs-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.viz-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.viz-topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.viz-step-title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.viz-scrubber input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.viz-explain {
+  padding: 12px 15px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  color: var(--text);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.viz-stage {
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+
+.viz-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.viz-stats.vertical {
+  grid-template-columns: 1fr;
+  margin-bottom: 0;
+}
+
+.viz-stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.viz-stat span {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.viz-stat strong {
+  font-size: 0.95rem;
+}
+
+.viz-stat.stat-success {
+  background: var(--success-soft);
+  border-color: var(--success-border);
+}
+
+.viz-stat.stat-success strong {
+  color: var(--success);
+}
+
+/* Array & Sliding Window */
+.viz-array {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 4px 14px;
+  justify-content: center;
+}
+
+.viz-cell-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.viz-ptrs {
+  min-height: 18px;
+  display: flex;
+  gap: 3px;
+}
+
+.ptr {
+  font-size: 0.66rem;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 4px;
+  color: #fff;
+}
+
+.ptr-left { background: #6366f1; }
+.ptr-i { background: #2563eb; }
+.ptr-conflict { background: #ef4444; }
+.ptr-best { background: #16a34a; }
+
+.viz-cell {
+  width: 46px;
+  height: 52px;
+  border-radius: 8px;
+  border: 2px solid var(--border-strong);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.18s, border-color 0.18s, background 0.18s;
+}
+
+.viz-cell .cell-val {
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.viz-cell .cell-idx {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.viz-cell.in-window {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.viz-cell.is-current {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+  border-color: #2563eb;
+}
+
+.viz-cell.is-best {
+  background: var(--success-soft);
+  border-color: var(--success);
+}
+
+.viz-cell.is-conflict {
+  background: rgba(239, 68, 68, 0.14);
+  border-color: #ef4444;
+}
+
+/* Subbox & Chips */
+.viz-subbox {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+}
+
+.viz-sublabel {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.viz-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.viz-chips.inline {
+  margin-top: 2px;
+}
+
+.viz-chip {
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: var(--surface-alt);
+  border: 1px solid var(--border-strong);
+}
+
+.viz-chip.chip-accent {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+.viz-chip.chip-success {
+  background: var(--success-soft);
+  border-color: var(--success-border);
+  color: var(--success);
+}
+
+.viz-chip.chip-amber {
+  background: var(--warning-soft);
+  border-color: var(--warning-border);
+  color: var(--warning-text);
+}
+
+.viz-chip.chip-red {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #ef4444;
+}
+
+.viz-chip.chip-done {
+  opacity: 0.55;
+}
+
+.viz-empty {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.viz-split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+
+/* Legend */
+.viz-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin: 4px 0 10px;
+}
+
+.viz-legend .lg {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-blue { background: #2563eb; }
+.dot-green { background: #16a34a; }
+.dot-red { background: #ef4444; }
+.dot-amber { background: #f59e0b; }
+
+/* Bar Chart (Bài 2) */
+.viz-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 14px;
+  padding: 10px 8px 14px;
+  overflow-x: auto;
+}
+
+.bar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 62px;
+}
+
+.bar-track {
+  height: 140px;
+  width: 38px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bar-col {
+  width: 100%;
+  min-height: 24px;
+  border-radius: 6px 6px 2px 2px;
+  background: var(--border-strong);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 4px;
+  transition: height 0.2s, background 0.2s;
+}
+
+.bar-col.bar-current { background: #2563eb; color: #fff; }
+.bar-col.bar-found { background: #16a34a; color: #fff; }
+.bar-col.bar-popped { background: #ef4444; color: #fff; }
+.bar-col.bar-in-stack { background: #f59e0b; color: #fff; }
+
+.bar-val {
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.bar-idx {
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.bar-meta {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.bar-res {
+  margin-top: 4px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--success);
+}
+
+/* Formula Ribbon & Stack (Bài 3) */
+.viz-ribbon {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.char-tile {
+  width: 30px;
+  height: 34px;
+  border-radius: 6px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.char-tile.is-done {
+  opacity: 0.45;
+}
+
+.char-tile.is-current {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  transform: scale(1.12);
+}
+
+.stack-column {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stack-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 7px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border-strong);
+}
+
+.stack-box.stack-top {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.stack-lvl {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+/* Huffman */
+.huff-merge-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.huff-op {
+  font-weight: 800;
+  color: var(--text-muted);
+}
+
+/* Rod Cut (Bài 8) */
+.rod-bar {
+  display: flex;
+  width: 100%;
+  min-height: 64px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid var(--border-strong);
+  margin-bottom: 14px;
+  gap: 3px;
+  background: #ef4444;
+  padding: 2px;
+}
+
+.rod-seg {
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  border-radius: 4px;
+  transition: width 0.25s ease;
+}
+
+.rod-seg.rod-max {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.rod-len {
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.rod-range {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+/* SVG Graphs & Segment Trees */
+.viz-svg-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  overflow-x: auto;
+}
+
+.viz-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.svg-edge {
+  stroke: var(--border-strong);
+  stroke-width: 2.2;
+}
+
+.svg-edge.edge-active {
+  stroke: #2563eb;
+  stroke-width: 3.2;
+}
+
+.svg-edge.edge-mst {
+  stroke: #16a34a;
+  stroke-width: 3.6;
+}
+
+.svg-edge.edge-cur-accept {
+  stroke: #16a34a;
+  stroke-width: 4.5;
+}
+
+.svg-edge.edge-reject {
+  stroke: #ef4444;
+  stroke-width: 3.5;
+  stroke-dasharray: 6 4;
+}
+
+.svg-edge.edge-dim {
+  opacity: 0.28;
+}
+
+.svg-w-bg {
+  fill: var(--surface);
+  stroke: var(--border-strong);
+  stroke-width: 1;
+}
+
+.svg-w-txt {
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--text);
+  text-anchor: middle;
+}
+
+.svg-node circle {
+  fill: var(--surface);
+  stroke: var(--border-strong);
+  stroke-width: 2.2;
+}
+
+.svg-node.node-c1 circle {
+  fill: var(--accent-soft);
+  stroke: #2563eb;
+}
+
+.svg-node.node-c2 circle {
+  fill: var(--warning-soft);
+  stroke: #f59e0b;
+}
+
+.svg-node.node-cur circle {
+  stroke-width: 4;
+}
+
+.svg-node.node-best circle {
+  fill: var(--success-soft);
+  stroke: #16a34a;
+  stroke-width: 3;
+}
+
+.svg-node-id {
+  font-size: 13px;
+  font-weight: 800;
+  fill: var(--text);
+  text-anchor: middle;
+}
+
+.svg-node-sub {
+  font-size: 10px;
+  fill: var(--text-secondary);
+  text-anchor: middle;
+}
+
+.tree-box rect {
+  fill: var(--surface);
+  stroke: var(--border-strong);
+  stroke-width: 1.8;
+}
+
+.tree-box.tree-path rect {
+  fill: var(--accent-soft);
+  stroke: #2563eb;
+  stroke-width: 2.4;
+}
+
+.tree-box.tree-added rect {
+  fill: var(--success-soft);
+  stroke: #16a34a;
+  stroke-width: 2.6;
+}
+
+.tree-range {
+  font-size: 10px;
+  fill: var(--text-secondary);
+  text-anchor: middle;
+  font-weight: 700;
+}
+
+.tree-val {
+  font-size: 11px;
+  fill: var(--text);
+  text-anchor: middle;
+  font-weight: 800;
+}
+
+@media (max-width: 900px) {
+  .tabs-bar.tabs-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

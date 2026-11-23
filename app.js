@@ -12,8 +12,11 @@
     studyMode: localStorage.getItem(STORAGE_STUDY) === "true",
     revealedSections: new Set(), // e.g. "1-idea", "1-code"
     traceSteps: {}, // key: `${problemId}-${tableIdx}` -> current step index or null (show all)
+    vizSteps: {}, // key: problemId -> current visual step index (0..len-1)
     playTimer: null,
-    playingKey: null
+    playingKey: null,
+    vizPlayTimer: null,
+    vizPlayingId: null
   };
 
   // DOM refs
@@ -125,6 +128,11 @@
       clearInterval(state.playTimer);
       state.playTimer = null;
       state.playingKey = null;
+    }
+    if (state.vizPlayTimer) {
+      clearInterval(state.vizPlayTimer);
+      state.vizPlayTimer = null;
+      state.vizPlayingId = null;
     }
   }
 
@@ -367,6 +375,45 @@
       .join("");
   }
 
+  function renderVisualTab(p) {
+    const steps = window.VISUALIZERS.getSteps(p.id);
+    const total = steps.length;
+    const cur = typeof state.vizSteps[p.id] === "number" ? state.vizSteps[p.id] : 0;
+    const clamped = Math.max(0, Math.min(total - 1, cur));
+    state.vizSteps[p.id] = clamped;
+    const stepObj = steps[clamped];
+    const isPlaying = state.vizPlayingId === p.id;
+
+    return `
+      <div class="viz-wrapper">
+        <div class="viz-topbar">
+          <div>
+            <span class="pill pill-accent">Bước ${clamped + 1} / ${total}</span>
+            <h3 class="viz-step-title">${escapeHtml(stepObj.title)}</h3>
+          </div>
+          <div class="trace-controls">
+            <button class="btn btn-sm" data-viz-action="reset" title="Về bước đầu">↺ Đầu</button>
+            <button class="btn btn-sm" data-viz-action="prev" ${clamped === 0 ? "disabled style='opacity:0.45'" : ""}>← Trước</button>
+            <button class="btn btn-sm ${isPlaying ? "btn-primary" : ""}" data-viz-action="play">${isPlaying ? "❚❚ Dừng" : "▶ Tự chạy"}</button>
+            <button class="btn btn-sm" data-viz-action="next" ${clamped === total - 1 ? "disabled style='opacity:0.45'" : ""}>Sau →</button>
+          </div>
+        </div>
+
+        <div class="viz-scrubber">
+          <input type="range" id="vizRange" min="0" max="${total - 1}" value="${clamped}" aria-label="Chọn bước mô phỏng" />
+        </div>
+
+        <div class="viz-explain">
+          💡 ${escapeHtml(stepObj.explain)}
+        </div>
+
+        <div class="viz-stage">
+          ${window.VISUALIZERS.renderStage(p.id, stepObj)}
+        </div>
+      </div>
+    `;
+  }
+
   function renderCodeTab(p) {
     const sol = p.solutions[state.activeSolutionIdx] || p.solutions[0];
     const switcher =
@@ -409,6 +456,7 @@
     let tabPanelHtml = "";
     if (state.activeTab === "idea") tabPanelHtml = renderIdeaTab(p);
     else if (state.activeTab === "illustration") tabPanelHtml = renderIllustrationTab(p);
+    else if (state.activeTab === "visual") tabPanelHtml = renderVisualTab(p);
     else tabPanelHtml = renderCodeTab(p);
 
     const examplesHtml = p.statement.examples
@@ -462,15 +510,18 @@
         </div>
       </details>
 
-      <div class="tabs-bar" role="tablist">
+      <div class="tabs-bar tabs-4" role="tablist">
         <button class="tab-btn ${state.activeTab === "idea" ? "active" : ""}" data-tab="idea" role="tab">
           <span class="tab-num">1</span> Ý tưởng
         </button>
         <button class="tab-btn ${state.activeTab === "illustration" ? "active" : ""}" data-tab="illustration" role="tab">
           <span class="tab-num">2</span> Minh họa
         </button>
+        <button class="tab-btn ${state.activeTab === "visual" ? "active" : ""}" data-tab="visual" role="tab">
+          <span class="tab-num">3</span> Minh họa 2
+        </button>
         <button class="tab-btn ${state.activeTab === "code" ? "active" : ""}" data-tab="code" role="tab">
-          <span class="tab-num">3</span> Code
+          <span class="tab-num">4</span> Code
         </button>
       </div>
 
@@ -616,6 +667,54 @@
         renderProblem(p.id);
       });
     });
+
+    // Visual simulator (Minh họa 2) controls
+    mainContent.querySelectorAll("[data-viz-action]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const action = btn.dataset.vizAction;
+        const total = window.VISUALIZERS.getSteps(p.id).length;
+        const cur = typeof state.vizSteps[p.id] === "number" ? state.vizSteps[p.id] : 0;
+
+        if (action === "reset") {
+          stopAutoPlay();
+          state.vizSteps[p.id] = 0;
+        } else if (action === "prev") {
+          stopAutoPlay();
+          state.vizSteps[p.id] = Math.max(0, cur - 1);
+        } else if (action === "next") {
+          stopAutoPlay();
+          state.vizSteps[p.id] = Math.min(total - 1, cur + 1);
+        } else if (action === "play") {
+          if (state.vizPlayingId === p.id) {
+            stopAutoPlay();
+          } else {
+            stopAutoPlay();
+            state.vizPlayingId = p.id;
+            if (cur >= total - 1) state.vizSteps[p.id] = 0;
+            state.vizPlayTimer = setInterval(() => {
+              const now = state.vizSteps[p.id] || 0;
+              if (now >= total - 1) {
+                stopAutoPlay();
+                renderProblem(p.id);
+                return;
+              }
+              state.vizSteps[p.id] = now + 1;
+              renderProblem(p.id);
+            }, 1250);
+          }
+        }
+        renderProblem(p.id);
+      });
+    });
+
+    const vizRange = document.getElementById("vizRange");
+    if (vizRange) {
+      vizRange.addEventListener("input", (e) => {
+        stopAutoPlay();
+        state.vizSteps[p.id] = Number(e.target.value);
+        renderProblem(p.id);
+      });
+    }
   }
 
   function renderMain() {
@@ -671,6 +770,10 @@
         state.activeTab = "illustration";
         renderProblem(state.currentView);
       } else if (e.key === "3") {
+        stopAutoPlay();
+        state.activeTab = "visual";
+        renderProblem(state.currentView);
+      } else if (e.key === "4") {
         stopAutoPlay();
         state.activeTab = "code";
         renderProblem(state.currentView);
